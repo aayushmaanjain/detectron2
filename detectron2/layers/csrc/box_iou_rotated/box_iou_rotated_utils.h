@@ -4,7 +4,7 @@
 #include <cassert>
 #include <cmath>
 
-#ifdef __CUDACC__
+#if defined(__CUDACC__) || defined(__HIPCC__)
 // Designates functions callable from the host (CPU) and the device (GPU)
 #define HOST_DEVICE __host__ __device__
 #define HOST_DEVICE_INLINE HOST_DEVICE __forceinline__
