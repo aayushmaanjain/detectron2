@@ -63,7 +63,7 @@ std::string get_compiler_version() {
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
   m.def("get_compiler_version", &get_compiler_version, "get_compiler_version");
   m.def("get_cuda_version", &get_cuda_version, "get_cuda_version");
-
+  /*
   m.def("box_iou_rotated", &box_iou_rotated, "IoU for rotated boxes");
 
   m.def("deform_conv_forward", &deform_conv_forward, "deform_conv_forward");
@@ -85,10 +85,10 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
       "modulated_deform_conv_backward");
 
   m.def("nms_rotated", &nms_rotated, "NMS for rotated boxes");
-
+  */
   m.def("roi_align_forward", &ROIAlign_forward, "ROIAlign_forward");
   m.def("roi_align_backward", &ROIAlign_backward, "ROIAlign_backward");
-
+/*
   m.def(
       "roi_align_rotated_forward",
       &ROIAlignRotated_forward,
@@ -97,6 +97,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
       "roi_align_rotated_backward",
       &ROIAlignRotated_backward,
       "Backward pass for Rotated ROI-Align Operator");
+*/
 }
 
 } // namespace detectron2
