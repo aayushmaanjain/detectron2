@@ -70,7 +70,8 @@
  */
 
 #include <ATen/ATen.h>
-#include <c10/hip/HIPGuard.h>
+//#include <c10/hip/HIPGuard.h>
+#include <ATen/hip/impl/HIPGuardImplMasqueradingAsCUDA.h>
 #include <float.h>
 #include <math.h>
 #include <stdio.h>
@@ -481,7 +482,8 @@ void deformable_im2col(
   int num_kernels = channels * height_col * width_col * parallel_imgs;
   int channel_per_deformable_group = channels / deformable_group;
 
-  at::cuda::HIPGuard device_guard(data_im.device());
+  //at::cuda::HIPGuard device_guard(data_im.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(data_im.device());
   hipStream_t stream = at::cuda::getCurrentHIPStream();
 
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(
@@ -546,7 +548,8 @@ void deformable_col2im(
       channels * ksize_h * ksize_w * height_col * width_col * parallel_imgs;
   int channel_per_deformable_group = channels / deformable_group;
 
-  at::cuda::HIPGuard device_guard(data_col.device());
+  //at::cuda::HIPGuard device_guard(data_col.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(data_col.device());
   hipStream_t stream = at::cuda::getCurrentHIPStream();
 
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(
@@ -612,7 +615,8 @@ void deformable_col2im_coord(
   int channel_per_deformable_group =
       channels * ksize_h * ksize_w / deformable_group;
 
-  at::cuda::HIPGuard device_guard(data_col.device());
+  //at::cuda::HIPGuard device_guard(data_col.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(data_col.device());
   hipStream_t stream = at::cuda::getCurrentHIPStream();
 
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(
@@ -1081,7 +1085,8 @@ void modulated_deformable_im2col_cuda(
   const int channel_per_deformable_group = channels / deformable_group;
   const int num_kernels = channels * batch_size * height_col * width_col;
 
-  at::cuda::HIPGuard device_guard(data_im.device());
+  //at::cuda::HIPGuard device_guard(data_im.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(data_im.device());
   hipStream_t stream = at::cuda::getCurrentHIPStream();
 
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(
@@ -1147,7 +1152,8 @@ void modulated_deformable_col2im_cuda(
   const int num_kernels =
       channels * kernel_h * kernel_w * batch_size * height_col * width_col;
 
-  at::cuda::HIPGuard device_guard(data_col.device());
+  //at::cuda::HIPGuard device_guard(data_col.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(data_col.device());
   hipStream_t stream = at::cuda::getCurrentHIPStream();
 
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(
@@ -1216,7 +1222,8 @@ void modulated_deformable_col2im_coord_cuda(
   const int channel_per_deformable_group =
       channels * kernel_h * kernel_w / deformable_group;
 
-  at::cuda::HIPGuard device_guard(data_col.device());
+  //at::cuda::HIPGuard device_guard(data_col.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(data_col.device());
   hipStream_t stream = at::cuda::getCurrentHIPStream();
 
   AT_DISPATCH_FLOATING_TYPES_AND_HALF(

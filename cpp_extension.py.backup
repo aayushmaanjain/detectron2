@@ -107,9 +107,9 @@ COMMON_NVCC_FLAGS = [
 ]
 
 COMMON_HIPCC_FLAGS = [
-     '-fPIC',
+     '-fPIC', '-O3','-fno-gpu-rdc',
      '-D__HIP_NO_HALF_OPERATORS__=1',
-     '-D__HIP_NO_HALF_CONVERSIONS__=1',
+     '-D__HIP_NO_HALF_CONVERSIONS__=1'
 ]
 
 # See comment in load_inline for more information
@@ -517,7 +517,7 @@ def CUDAExtension(name, sources, *args, **kwargs):
 
     libraries = kwargs.get('libraries', [])
     if HIP_COMP:
-        pass
+        libraries.append('hiprtc')
     else:
         libraries.append('cudart')
     if IS_WINDOWS:

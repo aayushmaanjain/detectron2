@@ -2,7 +2,8 @@
 // Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 #include <ATen/ATen.h>
 #include <ATen/hip/HIPContext.h>
-#include <c10/hip/HIPGuard.h>
+//#include <c10/hip/HIPGuard.h>
+#include <ATen/hip/impl/HIPGuardImplMasqueradingAsCUDA.h>
 #include <ATen/hip/HIPApplyUtils.cuh>
 #include "box_iou_rotated_utils.h"
 
@@ -69,7 +70,7 @@ at::Tensor box_iou_rotated_cuda(
   using scalar_t = float;
   AT_ASSERTM(boxes1.type().is_cuda(), "boxes1 must be a CUDA tensor");
   AT_ASSERTM(boxes2.type().is_cuda(), "boxes2 must be a CUDA tensor");
-  at::cuda::HIPGuard device_guard(boxes1.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(boxes1.device());
 
   int num_boxes1 = boxes1.size(0);
   int num_boxes2 = boxes2.size(0);

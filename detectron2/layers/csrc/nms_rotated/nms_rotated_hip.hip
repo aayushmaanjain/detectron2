@@ -2,7 +2,8 @@
 // Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 #include <ATen/ATen.h>
 #include <ATen/hip/HIPContext.h>
-#include <c10/hip/HIPGuard.h>
+//#include <c10/hip/HIPGuard.h>
+#include <ATen/hip/impl/HIPGuardImplMasqueradingAsCUDA.h>
 #include <ATen/hip/HIPApplyUtils.cuh>
 #include "../box_iou_rotated/box_iou_rotated_utils.h"
 
@@ -79,7 +80,7 @@ at::Tensor nms_rotated_cuda(
   // using scalar_t = float;
   AT_ASSERTM(dets.type().is_cuda(), "dets must be a CUDA tensor");
   AT_ASSERTM(scores.type().is_cuda(), "scores must be a CUDA tensor");
-  at::cuda::HIPGuard device_guard(dets.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(dets.device());
 
   auto order_t = std::get<1>(scores.sort(0, /* descending=*/true));
   auto dets_sorted = dets.index_select(0, order_t);

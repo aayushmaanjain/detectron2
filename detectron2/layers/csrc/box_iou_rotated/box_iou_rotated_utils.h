@@ -194,7 +194,7 @@ HOST_DEVICE_INLINE int convex_hull_graham(
     dist[i] = dot_2d<T>(q[i], q[i]);
   }
 
-#ifdef __CUDACC__
+#if defined(__CUDACC__) || defined(__HIPCC__)
   // CUDA version
   // In the future, we can potentially use thrust
   // for sorting here to improve speed (though not guaranteed)

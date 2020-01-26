@@ -2,7 +2,8 @@
 // Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 #include <ATen/ATen.h>
 #include <ATen/hip/HIPContext.h>
-#include <c10/hip/HIPGuard.h>
+//#include <c10/hip/HIPGuard.h>
+#include <ATen/hip/impl/HIPGuardImplMasqueradingAsCUDA.h>
 #include <ATen/hip/HIPApplyUtils.cuh>
 
 // TODO make it in a common file
@@ -337,7 +338,7 @@ at::Tensor ROIAlignRotated_forward_cuda(
   at::CheckedFrom c = "ROIAlignRotated_forward_cuda";
   at::checkAllSameGPU(c, {input_t, rois_t});
   at::checkAllSameType(c, {input_t, rois_t});
-  at::cuda::HIPGuard device_guard(input.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(input.device());
 
   auto num_rois = rois.size(0);
   auto channels = input.size(1);
@@ -396,7 +397,7 @@ at::Tensor ROIAlignRotated_backward_cuda(
   at::CheckedFrom c = "ROIAlign_backward_cuda";
   at::checkAllSameGPU(c, {grad_t, rois_t});
   at::checkAllSameType(c, {grad_t, rois_t});
-  at::cuda::HIPGuard device_guard(grad.device());
+  at::hip::HIPGuardMasqueradingAsCUDA device_guard(grad.device());
 
   auto num_rois = rois.size(0);
   auto grad_input =
