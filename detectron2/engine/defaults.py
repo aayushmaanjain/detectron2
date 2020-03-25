@@ -329,7 +329,7 @@ class DefaultTrainer(SimpleTrainer):
 
         # Do evaluation after checkpointer, because then if it fails,
         # we can use the saved checkpoint to debug.
-        ret.append(hooks.EvalHook(cfg.TEST.EVAL_PERIOD, test_and_save_results))
+        #ret.append(hooks.EvalHook(cfg.TEST.EVAL_PERIOD, test_and_save_results)) # TODO uncomment
 
         if comm.is_main_process():
             # run writers in the end, so that evaluation metrics are written

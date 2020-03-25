@@ -119,7 +119,9 @@ def find_top_rpn_proposals(
     # 2. Concat all levels together
     topk_scores = cat(topk_scores, dim=1)
     topk_proposals = cat(topk_proposals, dim=1)
+    #print([level_id.shape for level_id in level_ids])
     level_ids = cat(level_ids, dim=0)
+    #print(level_ids)
 
     # 3. For each image, run a per-level NMS, and choose topk results.
     results = []
@@ -134,6 +136,15 @@ def find_top_rpn_proposals(
         if keep.sum().item() != len(boxes):
             boxes, scores_per_img, lvl = boxes[keep], scores_per_img[keep], level_ids[keep]
 
+        #count= {}
+        #for i in range(lvl.numel()):
+        #    if lvl[i].item() not in count.keys():
+        #        count[lvl[i].item()] = 0
+        #    count[lvl[i].item()] += 1
+        #print((boxes.tensor.shape, boxes.tensor.type(), scores_per_img.type(), lvl.type(), nms_thresh))
+        #print(boxes.tensor.requires_grad, scores_per_img.requires_grad, lvl.requires_grad)
+        #print(boxes.tensor.device, scores_per_img.device, lvl.device)
+        #print(count)
         keep = batched_nms(boxes.tensor, scores_per_img, lvl, nms_thresh)
         # In Detectron1, there was different behavior during training vs. testing.
         # (https://github.com/facebookresearch/Detectron/issues/459)

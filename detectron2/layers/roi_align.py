@@ -15,6 +15,11 @@ class _ROIAlign(Function):
         ctx.spatial_scale = spatial_scale
         ctx.sampling_ratio = sampling_ratio
         ctx.input_shape = input.size()
+        #print('ROIAlign input shape:', (ctx.input_shape, roi.shape, spatial_scale, output_size[0], output_size[1], sampling_ratio, aligned))
+        #print('*'*20)
+        #print(ctx.input_shape, input.type())
+        #print(roi.shape, roi)
+        #print(spatial_scale, output_size[0], output_size[1], sampling_ratio, aligned)
         ctx.aligned = aligned
         output = _C.roi_align_forward(
             input, roi, spatial_scale, output_size[0], output_size[1], sampling_ratio, aligned
