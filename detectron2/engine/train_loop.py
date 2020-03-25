@@ -204,8 +204,13 @@ class SimpleTrainer(TrainerBase):
         If your want to do something with the data, you can wrap the dataloader.
         """
         data = next(self._data_loader_iter)
+        #print("*"*20) # TODO remove
+        #for it in data:
+        #    print(it['file_name']),
         data_time = time.perf_counter() - start
 
+        torch.cuda.synchronize()
+        start = time.time()
         """
         If your want to do something with the losses, you can wrap the model.
         """
@@ -229,6 +234,13 @@ class SimpleTrainer(TrainerBase):
         wrap the optimizer with your custom `step()` method.
         """
         self.optimizer.step()
+
+        torch.cuda.synchronize()
+        end = time.time()
+
+        _ = torch.topk(losses, 1) # TODO remove
+
+        print("***** batch time:", end - start)
 
     def _detect_anomaly(self, losses, loss_dict):
         if not torch.isfinite(losses).all():
